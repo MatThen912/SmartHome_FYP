@@ -1,0 +1,240 @@
+{% extends 'base.html' %} {% load static %} {% block content_container %} {% load crispy_forms_tags %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="stylesheet" href="{% static 'css/itemRegs.css' %}">
+
+  <!-- Page Heading -->
+  <title>User Creation</title>
+  <h1 class="h3 mb-0 text-gray-800">User Creation</h1><br>
+  <form method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+    <nav>
+      <div class="nav nav-tabs mb-3" id="nav-tab" role="tablist">
+        <a class="nav-item nav-link active" id="nav-info-tab" data-toggle="tab" href="#nav-info" role="tab"
+          aria-controls="nav-info" aria-selected="true">Basic Details</a>
+      </div>
+    </nav>
+    <div class="tab-content" id="nav-tabContent" style="overflow:hidden;">
+      <div class="tab-pane fade show active" id="nav-info" role="tabpanel" aria-labelledby="nav-info-tab">
+        <h5 class="font-weight-bold text-primary">Basic Information</h5>
+        <div class="row">
+          {% for field in form %}
+          <div class="col-md-6">
+            {% if field.name == 'username' %}
+            <label for="id_{{field.name}}"></label>
+            <div>
+              {{field|as_crispy_field}}
+            </div>
+            {% endif %}
+            {% if field.name == 'dob' %}
+            <label for="id_{{field.name}}"></label>
+            <div>
+              {{field|as_crispy_field}}
+            </div>
+            {% endif %}
+            {% if field.name == 'name' %}
+            <label for="id_{{field.name}}"></label>
+            <div>
+              {{field|as_crispy_field}}
+            </div>
+            {% endif %}
+            {% if field.name == 'email' %}
+            <label for="id_{{field.name}}"></label>
+            <div>
+              {{field|as_crispy_field}}
+            </div>
+            {% endif %}
+            {% if field.name == 'contact_number' %}
+            <label for="id_{{field.name}}"></label>
+            <div>
+              {{field|as_crispy_field}}
+            </div>
+            {% endif %}
+            {% if field.name == 'role' %}
+              <label for="id_{{field.name}}"></label>
+              <div>
+                {{field|as_crispy_field}}
+              </div>
+            </div>
+            {% endif %}
+            {% if field.name == 'password1' %}
+            <label for="id_{{field.name}}"></label>
+            <div>
+              {{field|as_crispy_field}}
+            </div>
+            {% endif %}
+            {% if field.name == 'password2' %}
+            <label for="id_{{field.name}}"></label>
+            <div>
+              {{field|as_crispy_field}}
+            </div>
+            {% endif %}
+
+        </div>
+        {% endfor %}
+      </div>
+      <button type="submit" class="btn btn-primary" onclick="myClear();">Submit</button>
+      </div>
+    </div>
+  </form>
+
+  <!-- Modal -->
+  <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">User Creation Information</h5>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  {% endblock content_container %}
+  {% block javascript %}
+  <script src="{% static 'js/forms.js' %}"></script>
+  <script src="{% static 'js/usercreation.js' %}"></script>
+  <script src="{% static 'js/LSusercreation.js' %}"></script>
+  <script>
+    const mySel = document.getElementById("id_role");
+    mySel.addEventListener("change", function () {
+      localStorage.setItem("selValue", this.value);
+      let val = localStorage.getItem("selValue");
+      toggleBasedonRole(localStorage.getItem("selValue"));
+    });
+    window.onload = function () {
+      let val = localStorage.getItem("selValue");
+      if (val !== null) {
+        $('#id_role').val(val);
+        toggleBasedonRole(val);
+      }
+    }
+  </script>
+  <script type="text/javascript">
+    let elements = [],
+      container = document.getElementById("id_role");
+    for (let i = 0; i < container.children.length; i++) {
+      elements.push(container.children[i].outerHTML);
+    }
+  </script>
+  <script>
+    function toggle(source) {
+      var checkboxes = document.querySelectorAll('input[id*="permissions"]');
+      for (var i = 0; i < checkboxes.length; i++) {
+        if (checkboxes[i] != source)
+          checkboxes[i].checked = source.checked;
+      }
+    }
+
+    function toggleBasedonRole(role) {
+      var checkboxes = document.querySelectorAll('input[id*="permissions"]');
+      if (role == "Super Admin") {
+        for (var i = 0; i < checkboxes.length; i++) {
+            checkboxes[i].checked = true;
+        }
+      } else if (role == "Admin") {
+        for (var i = 0; i < checkboxes.length; i++) {
+          curr_label = document.querySelector
+                      (`label[for=${checkboxes[i].id}]`)
+          if (curr_label && !curr_label.outerHTML.toLowerCase().includes("log")) {
+            checkboxes[i].checked = true;
+          } else if (curr_label && curr_label.outerHTML.toLowerCase().includes("account")) {
+            checkboxes[i].checked = true;
+          } else {
+            checkboxes[i].checked = false;
+          }
+        }
+      } else if (role == "Internal Vet") {
+        for (var i = 0; i < checkboxes.length; i++) {
+          curr_label = document.querySelector
+                      (`label[for=${checkboxes[i].id}]`)
+
+          if (curr_label && curr_label.outerHTML.toLowerCase().includes("chickshealth")) {
+            checkboxes[i].checked = true;
+          } else if (curr_label && curr_label.outerHTML.toLowerCase().includes("itemregistration")) {
+            if (curr_label && curr_label.outerHTML.toLowerCase().includes("medicine") || 
+                curr_label.outerHTML.toLowerCase().includes("vaccine") ||
+                curr_label.outerHTML.toLowerCase().includes("suspected cause") ||
+                curr_label.outerHTML.toLowerCase().includes("diagnosis")) {
+                  checkboxes[i].checked = true;
+            }
+          } else if (curr_label && curr_label.outerHTML.toLowerCase().includes("stocksupplies")) {
+            if (curr_label && curr_label.outerHTML.toLowerCase().includes("medicine") || 
+                curr_label.outerHTML.toLowerCase().includes("vaccine") ||
+                curr_label.outerHTML.toLowerCase().includes("suspected cause") ||
+                curr_label.outerHTML.toLowerCase().includes("diagnosis")) {
+                  checkboxes[i].checked = true;
+            }
+          } else {
+            checkboxes[i].checked = false;
+          }
+        }
+      } else if (role == "Manager") {
+        for (var i = 0; i < checkboxes.length; i++) {
+          curr_label = document.querySelector
+                      (`label[for=${checkboxes[i].id}]`)
+
+          if (curr_label && curr_label.outerHTML.toLowerCase().includes("approvals") ||
+          curr_label.outerHTML.toLowerCase().includes("stocksupplies") ||
+          curr_label.outerHTML.toLowerCase().includes("dailyrecords") ||
+          curr_label.outerHTML.toLowerCase().includes("balance")) {
+            checkboxes[i].checked = true;
+          } else {
+            checkboxes[i].checked = false;
+          }
+        }
+      } else {
+        for (var i = 0; i < checkboxes.length; i++) {
+          checkboxes[i].checked = false;
+      }
+      }
+    }
+
+    const toggleSelectAllFarm = (source) => {
+      var checkboxes = document.querySelectorAll('input[id*="farm_code"]');
+      for (var i = 0; i < checkboxes.length; i++) {
+        if (checkboxes[i] != source)
+          checkboxes[i].checked = source.checked;
+      }
+    }
+  </script>
+  <script>
+    $("#SearchBar").on("keyup", function () {
+      var g = $(this).val().toLowerCase();
+      $(".form-check").each(function () {
+        var s = $(this).text().toLowerCase();
+        $(this).closest('.form-check')[s.indexOf(g) !== -1 ? 'show' : 'hide']();
+      });
+    });
+  </script>
+  {% endblock %}
+
+
+
+
+  {% block Heading %}
+  <h1>Register</h1>
+  {% endblock %}
+
+  {% block content %}
+  <div class="column-is-mobile">
+    <div class="column-is-half is-offset-one-quarter">
+      <h3 class="title-is-size3">Create New User</h3>
+      <form action="{% url 'addUser' %}" method="post">
+        {% csrf_token %}
+        {% for user in object_list %}
+        <div class="user">
+          <label for="{{ user.username }}" class="label">{{ user.html_name }}</label>
+          {{ user }}
+        </div>
+
+        {% endfor %}
+        <button type="submit" class="button-is-primary">Submit</button>
+      </form>
+    </div>
+  </div>
+  {% endblock %}

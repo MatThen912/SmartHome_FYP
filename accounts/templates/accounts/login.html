@@ -1,0 +1,253 @@
+{% load static %} {% load crispy_forms_tags %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+    <link
+      rel="apple-touch-icon"
+      sizes="76x76"
+      href="{% static '/img/smarthomelogo.png' %}"
+    />
+    <link rel="icon" type="image/png" href="{% static '/img/smarthomelogo.png' %}" />
+    <title>SmartHome</title>
+    <!--     Fonts and icons     -->
+    <link
+      href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700"
+      rel="stylesheet"
+    />
+    <!-- Nucleo Icons -->
+    <link href="{% static '/css/nucleo-icons.css' %}" rel="stylesheet" />
+    <link href="{% static '/css/nucleo-svg.css' %}" rel="stylesheet" />
+    <!-- Font Awesome Icons -->
+    <script
+      src="https://kit.fontawesome.com/42d5adcbca.js"
+      crossorigin="anonymous"
+    ></script>
+    <link href="{% static '/css/nucleo-svg.css' %}" rel="stylesheet" />
+    <!-- CSS Files -->
+    <link
+      id="pagestyle"
+      href="{% static '/css/soft-ui-dashboard.css' %}"
+      rel="stylesheet"
+    />
+
+    <style>
+      /* *{
+        margin:0;
+        padding:0;
+        box-sizing: border-box;
+      }
+
+      .body{
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 0;
+      }
+
+      .container{
+        max-width: 900px;
+        width: 100%;
+        margin-top: 30px;
+        padding: 40px 30px;
+        background-color: white;
+        box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+        height: 100%;
+        position: relative;
+      }
+
+      .container .form-content{
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+      }
+
+      .container .cover{
+        position: absolute;  
+        height: 100%;
+        width: 50%;
+        top: 0;
+        left: 50%;
+        background:rgb(54, 0, 190);
+        z-index: 69;
+        transition: all 1s ease;
+        perspective: 2800px;
+        transform-style: preserve-3d;
+        transform-origin: left;
+      }
+
+      .container #flip:checked~.cover{
+        transform: rotateY(-180deg);
+      }
+
+      .front{
+        display: flex;
+        justify-content: center;
+        backface-visibility: hidden;
+      }
+
+      .container .cover::before{
+        content: '';
+        position: absolute;
+        height: 100%;
+        width: 100%;
+        z-index:100;
+      }
+
+      .container .cover::after{
+        content: '';
+        position: absolute;
+        height: 100%;
+        width: 100%;
+        z-index: 100;
+        transform: rotateY(180deg);
+        
+      }
+
+      .container .cover img{
+        width: 100%;
+        max-width: 300px;
+        height: auto;
+        margin: 100px auto;
+        object-fit: cover;
+      }
+
+      .form-content .login-form, 
+      .form-content .register-form{
+        width: calc(100%/2 - 25px);
+      }
+
+      .register-form{
+        overflow-y: scroll;
+        overflow-x: hidden;
+      }
+
+      footer{
+        text-align: center;
+      } */
+    </style>
+  </head>
+
+  <body>
+      <section>
+      <main class="main-content mt-0">
+        <div class="page-header min-vh-75">
+          
+           <div class="container">
+            <div class="row">
+              <div
+                class="col-xl-4 col-lg-5 col-md-6 d-flex flex-column mx-auto"
+              >
+                <div class="card card-plain mt-8">
+                  <div class="card-header pb-0 text-left bg-transparent">
+                    <h3 class="font-weight-bolder text-primary text-center">
+                      Welcome to Smart Home System 
+                    </h3>
+                    <p class="mb-0 text-center">Please Enter Your Username and Password to Continue</p>
+                  </div>
+                  <div class="card-body">
+                    <form method="POST" class="user">
+                      {% csrf_token %} 
+                      {% if messages %}
+                      {% for message in messages %}
+                        {% if messages %}
+                        {% for message in messages %}
+                            {% if 'success' in message.tags %}
+                            <div class="d-flex w-100 justify-content-end">
+                                <div id="myDiv" class="p-3 mb-2 text-white border border-white px-4 py-3 rounded relative message" role="alert" style="background-color: rgb(160, 232, 179);">  
+                                    {{ message }}
+                                    <a href="#" class="btn-close" data-dismiss="alert" aria-label="Close"> &times;</a>
+                                </div>
+                            </div>
+                            
+                            {% else %}
+                            <div class="p-3 mb-2 bg-danger text-white border border-white px-4 py-3 rounded relative message">
+                            <!--<div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative message">-->
+                                <span class="block sm:inline">{{ message }}</span>
+                                <span class="absolute top-0 bottom-0 right-0 px-4 py-3">
+                                </span>
+                            </div>
+                            {% endif %}
+                        {% endfor %}
+                        {% endif %}
+                      {% endfor %}
+                      {% endif %}
+                      
+                      {{ login_form|crispy}}
+                      <input type="hidden" name="next_url" value="{{next_url}}">
+                      <button
+                        type="submit"
+                        class="btn btn-primary btn-user btn-block w-100 mt-4 mb-0"
+                      >
+                        Login
+                      </button>
+                    </form>
+                  </div>
+                  <div class="card-footer text-center pt-0 px-lg-2 px-1">
+                    <p class="mb-4 text-sm mx-auto">
+                      Can't remember your password?
+                      <a href="{% url 'forgot-password' %}" class="text-secondary font-weight-bold">Reset Password</a>
+                    </p>
+                  </div>
+                 
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="top-0 h-100 d-md-block d-none me-n8" style="align-items:center;">
+                  <img src="{% static 'img\home.jpg' %}" alt="Logo" style="width: 100%; max-width:500px; height: auto; margin: 100px auto;">          
+                  <!-- <div
+                    class="
+                      bg-cover
+                      position-absolute
+                      fixed-top
+                      ms-auto
+                      h-100
+                      z-index-0
+                      ms-n6
+                    "
+                    style="
+                      background-image: url('/static/img/smarthomelogo.png');
+                      background-position: center;
+                      background-size: contain;
+                      background-repeat: no-repeat;
+                    "
+                  ></div> -->
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!--   Core JS Files   -->
+    <script src="{% static '/js/core/popper.min.js' %}"></script>
+    <script src="{% static '/js/core/bootstrap.min.js' %}"></script>
+    <script src="{% static '/js/plugins/perfect-scrollbar.min.js' %}"></script>
+    <script src="{% static '/js/plugins/smooth-scrollbar.min.js' %}"></script>
+    <script>
+      document.getElementById('copyright').innerHTML = "Copyright © " + new Date().getFullYear() + " Smart Home"
+    </script>
+    <script>
+      var win = navigator.platform.indexOf("Win") > -1;
+      if (win && document.querySelector("#sidenav-scrollbar")) {
+        var options = {
+          damping: "0.5",
+        };
+        Scrollbar.init(document.querySelector("#sidenav-scrollbar"), options);
+      }
+    </script>
+    <!-- Github buttons -->
+    <script async defer src="https://buttons.github.io/buttons.js"></script>
+    <!-- Control Center for Soft Dashboard: parallax effects, scripts for the example pages etc -->
+    <script src="{% static '/js/soft-ui-dashboard.min.js' %}"></script>
+    <script>      
+      $("#myDiv").fadeOut(5000);
+    </script>
+  </body>
+</html>

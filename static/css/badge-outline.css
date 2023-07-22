@@ -1,0 +1,152 @@
+.outline-warning{
+    background-color: #FFFFFF;
+    border: 2px solid transparent;
+    border-color: #FFD600;
+    color: rgb(98, 153, 153);
+}
+
+.outline-warning-nohover{
+    background-color: #FFFFFF;
+    border: 2px solid transparent;
+    border-color: #FFD600;
+    color: rgb(98, 153, 153);
+}
+
+.outline-yellow{
+    background-color: #FFFFFF;
+    border: 2px solid transparent;
+    border-color: #add8e6;
+    color: rgb(98, 153, 153);
+}
+
+.outline-yellow-nohover{
+    background-color: #FFFFFF;
+    border: 2px solid transparent;
+    border-color: #add8e6;
+    color: rgb(98, 153, 153);
+}
+
+.outline-blue{
+  background-color: #FFFFFF;
+  border: 2px solid transparent;
+  border-color: #5856D6;
+  color: rgb(98, 153, 153);
+}
+
+.outline-blue-nohover{
+  background-color: #FFFFFF;
+  border: 2px solid transparent;
+  border-color: #5856D6;
+  color: rgb(98, 153, 153);
+}
+
+.outline-white{
+  background-color: #FFFFFF;
+  border: 2px solid transparent;
+  border-color: #fff;
+  color: rgb(98, 153, 153);
+}
+
+.outline-white-nohover{
+  background-color: #FFFFFF;
+  border: 2px solid transparent;
+  border-color: #fff;
+  color: rgb(98, 153, 153);
+}
+
+.outline-primary{
+    background-color: #FFFFFF;
+    border: 2px solid transparent;
+    border-color: #2196F3;
+    color: rgb(98, 153, 153);
+}
+.outline-secondary{
+    background-color: #FFFFFF;
+    border: 2px solid transparent;
+    border-color:#6C757D;
+    color: rgb(98, 153, 153);
+}
+
+.outline-success{
+    background-color: #FFFFFF;
+    border: 2px solid transparent;
+    border-color:#8ED926;
+    color: rgb(98, 153, 153);
+}
+
+.outline-danger{
+    background-color: #FFFFFF;
+    border: 2px solid transparent;
+    border-color: rgb(226, 58, 58);
+    color: rgb(98, 153, 153);
+}
+
+.outline-info{
+    background-color: #FFFFFF;
+    border: 2px solid transparent;
+    color: rgb(98, 153, 153);
+}
+
+.outline-dark{
+    background-color: #FFFFFF;
+    border: 2px solid transparent;
+    border-color: black;
+    color: rgb(98, 153, 153);
+}
+
+.outline-danger:hover{
+    box-shadow: 0px 0px 5px rgba(0,0,0,0.5);
+    cursor: pointer;
+    background-color: rgb(226, 58, 58);
+    color: #FFFFFF;
+    
+  }
+  .outline-warning:hover{
+    box-shadow: 0px 0px 5px rgba(0,0,0,0.5);
+    cursor: pointer;
+    background-color: #FFD600;
+    color: #FFFFFF;
+    
+  }.outline-yellow:hover{
+    box-shadow: 0px 0px 5px rgba(0,0,0,0.5);
+    cursor: pointer;
+    background-color: #add8e6;
+    color: #FFFFFF;
+
+  }.outline-blue:hover{
+    box-shadow: 0px 0px 5px rgba(0,0,0,0.5);
+    cursor: pointer;
+    background-color: #5856D6;
+    color: #FFFFFF;
+    
+  }.outline-primary:hover{
+    box-shadow: 0px 0px 5px rgba(0,0,0,0.5);
+    cursor: pointer;
+    background-color: #2196F3;
+    color: #FFFFFF;
+    
+  }.outline-secondary:hover{
+    box-shadow: 0px 0px 5px rgba(0,0,0,0.5);
+    cursor: pointer;
+    background-color: #6C757D;
+    color: #FFFFFF;
+    
+  }.outline-sucess:hover{
+    box-shadow: 0px 0px 5px rgba(0,0,0,0.5);
+    cursor: pointer;
+    background-color: black;
+    color: #FFFFFF;
+  }
+
+  .outline-info:hover{
+    box-shadow: 0px 0px 5px rgba(0,0,0,0.5);
+    cursor: pointer;
+    background-color: #0DCAF0;
+    color: #FFFFFF;
+  }
+  .outline-dark:hover{
+    box-shadow: 0px 0px 5px rgba(0,0,0,0.5);
+    cursor: pointer;
+    background-color: rgb(226, 58, 58);
+    color: #FFFFFF;
+  }

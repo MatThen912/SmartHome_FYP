@@ -1,0 +1,96 @@
+html,
+body {
+    min-height: 100%;
+}
+
+body,
+div,
+form,
+input,
+p {
+    padding: 0;
+    margin: 0;
+    outline: none;
+    font-family: Roboto, Arial, sans-serif;
+    font-size: 16px;
+    color: #6e6666;
+    line-height: 28px;
+
+}
+
+h1,
+h4 {
+    font-weight: 400;
+}
+
+h4 {
+    margin: 25px 0 5px;
+    color: #095484;
+}
+
+.testbox {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: inherit;
+    padding: 3px;
+}
+
+form {
+    width: 100%;
+    padding: 20px;
+    background: #fff;
+    box-shadow: 0 2px 5px rgb(162, 183, 209);
+}
+
+input {
+    width: auto;
+    margin-right: 15px;
+    vertical-align: middle;
+}
+
+.question-answer label {
+    display: block;
+}
+
+.btn-block {
+    margin-top: 20px;
+    text-align: center;
+}
+
+.btn-primary {
+    width: 150px;
+    padding: 10px;
+    border: none;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+    background-color: #FDD015;
+    font-size: 16px;
+    color: #fff;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #e48900;
+}
+
+table,
+tr,
+td {
+
+    border-collapse: collapse;
+}
+
+tr.header {
+    cursor: pointer;
+}
+
+.header .sign:after {
+    content: "+";
+    display: inline-block;
+}
+
+.header.expand .sign:after {
+    content: "-";
+}

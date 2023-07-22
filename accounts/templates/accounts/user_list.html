@@ -1,0 +1,98 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %} {% block content_container %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <title>User Management</title>
+  <style>
+    .close {
+  position: relative;
+  top: -2px;
+  right: -21px;
+  color: inherit;
+}
+  </style>
+</head>
+
+<body>
+  <h1 class="h3 mb-0 text-gray-800">User Management</h1>
+  <br>
+  <div class="card shadow mb-4">
+    <div class="card-header py-3">
+      <button type="button" class="btn btn-secondary" onclick="document.location='addUser'">Add User</button>
+    </div>
+    <div class="card-body">
+
+      <div class="table-responsive">
+        <table class="table align-items-center mb-0" id="dataTable" width="100%" cellspacing="0">
+          <thead>
+            <tr>
+              <th class="text-center text-uppercase text-secondary text-mb font-weight-bolder opacity-15">Username</th>
+              <th class="text-center text-uppercase text-secondary text-mb font-weight-bolder opacity-15">Name</th>
+              <th class="text-center text-uppercase text-secondary text-mb font-weight-bolder opacity-15">Email</th>
+              <th class="text-center text-uppercase text-secondary text-mb font-weight-bolder opacity-15">Contact no.</th>
+              <th class="text-center text-uppercase text-secondary text-mb font-weight-bolder opacity-15">Role</th>
+              <th class="text-center text-uppercase text-secondary text-mb font-weight-bolder opacity-15">Action</th>
+              
+            </tr>
+          </thead>
+          <tbody>
+            {% for User in object_list %}
+            <tr>
+              <td class="align-middle text-center text-m">{{ User.username }}</td>
+              <td class="align-middle text-center text-m">{{ User.name }}</td>
+              <td class="align-middle text-center text-m">{{ User.email }}</td>
+              <td class="align-middle text-center text-m">{{ User.contact_number }}</td>
+              <td class="align-middle text-center text-m">{{ User.role }}</td>
+              <td class="align-middle text-center text-m"><a href="{% url 'viewUser' User.account_id %}" class="badge badge-sm outline-blue">View</a>
+                <a href="{% url 'editUser' User.account_id %}" class="badge badge-sm outline-blue">Edit</a>
+                {% if User.is_superuser == False and User.role != "Super Admin"%}                
+                  <a onClick="setID('{{ User.account_id }}', 'user')" data-toggle="modal" data-target="#deleteModal" class="badge badge-sm outline-danger">Delete</a>
+                {% endif %}
+                </td>
+
+                <!-- <a href="{% url 'deleteUser' User.account_id %}" class="badge badge-sm outline-danger">Delete</a></td> -->
+           
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  
+<!-- pop out modal for bulk stock in & out -->
+
+  
+  <script>
+    var table = $('#dataTable').DataTable({
+      language: {
+        oPaginate: {
+          sNext: '<i class="fa fa-angle-right"></i>',
+          sPrevious: '<i class="fa fa-angle-left"></i>',
+        }
+      }
+    })
+  </script>
+
+{% include 'delete-confirmation.html' %}
+
+<script>
+  // set which id to delete on confirmation pop up
+  const setID = (id, type) => {
+    const IDField = document.querySelector("#event-id");
+    IDField.value = JSON.stringify({id, type});
+  }
+
+  // delete data function
+  const deleteData = () => {
+    data = JSON.parse(document.getElementById("event-id").value);
+      url = `deleteUser/${data.id}`;
+    window.history.pushState({}, '', url);
+    return location.reload();
+  }
+</script>
+{% endblock content_container %}
+{% block javascript %}
+{% endblock %}

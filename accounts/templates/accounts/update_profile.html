@@ -1,0 +1,73 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content_container %}
+{% load crispy_forms_tags %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="{% static 'css/itemRegs.css' %}">
+
+    <!-- Page Heading -->
+    <title>User Profile</title>
+</head>
+<h1 class="h3 mb-0 text-gray-800">Edit User</h1><br>
+
+<div class="row">
+    <div class="card-body">
+        <form method="POST" enctype="multipart/form-data">
+
+            {% csrf_token %}
+            <div class="row">
+                {% for field in form %}
+                <div class="col-md-6">
+                    {% if field.name == 'username' %}
+                    <label for="id_{{field.name}}"></label>
+                    <div>
+                        {{field|as_crispy_field}}
+                    </div>
+                    {% endif %}
+                    {% if field.name == 'dob' %}
+                    <label for="id_{{field.name}}"></label>
+                    <div>
+                        {{field|as_crispy_field}}
+                    </div>
+                    {% endif %}
+                    {% if field.name == 'name' %}
+                    <label for="id_{{field.name}}"></label>
+                    <div>
+                        {{field|as_crispy_field}}
+                    </div>
+                    {% endif %}
+                    {% if field.name == 'email' %}
+                    <label for="id_{{field.name}}"></label>
+                    <div>
+                        {{field|as_crispy_field}}
+                    </div>
+                    {% endif %}
+                    {% if field.name == 'contact_number' %}
+                    <label for="id_{{field.name}}"></label>
+                    <div>
+                        {{field|as_crispy_field}}
+                    </div>
+                    {% endif %}
+                    {% if field.name == 'role' %}
+                    <div class="row">
+                      <label for="id_{{field.name}}"></label>
+                      <div>
+                        {{field|as_crispy_field}}
+                      </div>
+                    </div>
+                    {% endif %}
+                </div>
+                
+                {% endfor %}
+            </div>
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+    </div>
+</div>
+
+{% endblock %}

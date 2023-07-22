@@ -1,0 +1,209 @@
+{% load static %}
+
+<head>
+  <style>
+    .hidden-scroll::-webkit-scrollbar {
+      display: none;
+    }
+
+    /* Hide scrollbar for IE, Edge and Firefox */
+    .hidden-scroll {
+      -ms-overflow-style: none;
+      /* IE and Edge */
+      scrollbar-width: none;
+      /* Firefox */
+    }
+
+    .dropdown {
+      color: #fff;
+      display: block;
+      position: relative;
+      text-decoration: none;
+      transition-duration: 0.5s;
+    }
+
+    .menu:hover{
+      background-color: #213278;
+    }   
+    
+    .ddown-menu {
+      visibility: hidden;
+      opacity: 0;
+      min-width: 100%;
+      position: absolute;
+      transition: all 0.5s ease;
+      display: none;
+      margin-left: -1em;
+      background: #8E44AD;
+      padding: 0;
+      z-index: 1000;
+      box-shadow: 0 3px 4px rgb(0 0 0 / 0.1);
+      border-radius: 5px;
+      transform: translate(100%, -46px);
+     
+    }
+    
+    .dropdown:hover > .ddown-menu,
+    .ddown-menu:hover {
+      visibility: visible;
+      opacity: 1;
+      display: block;
+    }
+    
+    .dropdown-item {
+      clear: both;
+      width: 100%;
+      padding: .4rem;
+    }
+
+    .hiddenable-text {
+      color: rgb(233, 233, 233);
+    }
+
+    .active > a > span {
+      color: skyblue;
+    }
+
+    .setting-menu {
+      transform: translate(0%, -100%);
+    }
+
+    .itemregs-menu {
+      transform: translate(100%, -50%);
+    }
+
+    .force-scroll {
+      overflow-y: scroll;
+      height: 140px; 
+      margin-left:-2em;
+    }
+
+    .force-scroll::-webkit-scrollbar {
+      width: 10px;
+    }
+
+    .force-scroll::-webkit-scrollbar-track {
+      background: rgb(192, 192, 192);
+      border-radius: 100vw;
+      margin-block: .5em;
+    }
+
+    .force-scroll::-webkit-scrollbar-thumb {
+      background: rgb(71, 71, 71);
+      border-radius: 100vw;
+    }
+
+    .right-align-arrow {
+      position: absolute;
+      right: 0;
+      margin-right: 20px;
+      margin-top: 5px;
+      transition: 0.3s ease;
+    }
+
+    .sub-menu {
+      background: rgba(255,255,255,0.1);
+      display: none;
+    }
+
+    .rotate {
+      transform: rotate(90deg);
+    }
+
+    .sub-menu-item {
+      margin-left: 30px;
+    }
+
+
+
+  </style>
+</head>
+<!-- Sidebar -->
+<ul class="navbar-nav sidebar accordion" style="width:max-content; margin-bottom: 2em;" id="accordionSidebar">
+  <!-- Sidebar - Brand -->
+
+  <div class="sidebar-brand navbar-brand d-flex align-items-center justify-content-center pt-1 pb-2 border-b" style="position: relative">
+    <a href="{% url 'home' %}">
+      <img class="sidebar-brand-icon" src="{% static 'img/home.jpg' %}" alt="Logo" height="40">
+      <span class="ms-1 hiddenable-text font-weight-bold mx-2">Smart Home</span>
+    </a>
+  </div>
+
+  {% comment %} <a  style="position: relative; z-index: -1;" class="sidebar-brand navbar-brand d-flex align-items-center justify-content-center pt-1 pb-2 border-b" href="{% url 'home' %}">
+    <div class="sidebar-brand-icon">
+      <img src="{% static 'img/smarthomelogo.png' %}" alt="Logo" height="40">
+    </div>
+    <div class="ms-1 hiddenable-text font-weight-bold mx-2">Smart Home</div>
+  </a> {% endcomment %}
+
+  <hr class="horizontal dark mt-0"> 
+  {% if user.role == "Super Admin" %}
+    <li class="nav-item" id="home">
+      <a class="nav-link menu" href="{% url 'home' %}">
+        <i class="fas fa-home fa-fw mr-2 text-gray-400"></i>
+        <span class="hiddenable-text nav-link-text ms-1">Dashboard</span>
+      </a>
+    </li>
+
+    <li class="nav-item" id="User">
+      <a class="nav-link menu" href="{% url 'userlist' %}">
+        <i class="fa-sharp fa-solid fa-plug"></i>
+        <span class="hiddenable-text nav-link-text ms-1">Device</span>
+      </a>
+    </li>
+
+    <li class="nav-item" id="User">
+      <a class="nav-link menu" href="{% url 'userlist' %}">
+        <i class="fa-solid fa-user"></i>
+        <span class="hiddenable-text nav-link-text ms-1">User</span>
+      </a>
+    </li>
+
+    <li class="nav-item" id="home">
+      <a class="nav-link menu" href="{% url 'userlog' %}">
+        <i class="fa-solid fa-book"></i>
+        <span class="hiddenable-text nav-link-text ms-1">Logbook</span>
+      </a>
+    </li>
+    {% elif user.role == "Admin" %}
+    <li class="nav-item" id="home">
+      <a class="nav-link menu" href="{% url 'home' %}">
+        <i class="fas fa-home fa-fw mr-2 text-gray-400"></i>
+        <span class="hiddenable-text nav-link-text ms-1">Dashboard</span>
+      </a>
+    </li>
+
+    <li class="nav-item" id="User">
+      <a class="nav-link menu" href="{% url 'userlist' %}">
+        <i class="fa-sharp fa-solid fa-plug"></i>
+        <span class="hiddenable-text nav-link-text ms-1">Device</span>
+      </a>
+    </li>
+
+    <li class="nav-item" id="User">
+      <a class="nav-link menu" href="{% url 'userlist' %}">
+        <i class="fa-solid fa-user"></i>
+        <span class="hiddenable-text nav-link-text ms-1">User</span>
+      </a>
+    </li>
+
+    <li class="nav-item" id="home">
+      <a class="nav-link menu" href="{% url 'userlog' %}">
+        <i class="fa-solid fa-book"></i>
+        <span class="hiddenable-text nav-link-text ms-1">Logbook</span>
+      </a>
+    </li>
+    {%elif user.role == "User" %}
+      <li class="nav-item" id="home">
+        <a class="nav-link menu" href="{% url 'home' %}">
+          <i class="fas fa-home fa-fw mr-2 text-gray-400"></i>
+          <span class="hiddenable-text nav-link-text ms-1">Dashboard</span>
+        </a>
+      </li>
+      <li class="nav-item" id="User">
+        <a class="nav-link menu" href="{% url 'userlist' %}">
+          <i class="fa-sharp fa-solid fa-plug"></i>
+          <span class="hiddenable-text nav-link-text ms-1">Device</span>
+        </a>
+      </li>
+  {%endif%}

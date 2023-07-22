@@ -1,0 +1,30 @@
+{% load static %} {% block content_container %} {% load crispy_forms_tags %}
+<!-- Change fund Modal-->
+<div class="modal fade" id="updatePicture" tabindex="-1" role="alert" aria-labelledby="exampleModalLabel" aria-hidden="true" >
+    <div class="modal-dialog" role="document" id="updatePicture" >
+        <div class="modal-content"  id="updatePicture" >
+            <div class="modal-header" >
+                <h5 class="modal-title" id="exampleModalLabel" >Please upload your image</h5>
+                
+            </div>
+            <form method="POST" class="user" enctype="multipart/form-data" action="{% url 'updateProfilePic' request.user.pk %}">
+            <div class="modal-body" >
+                    {% csrf_token %}
+                    <div class="row">
+                        <input type="file" id="profile-pic" name="profile-pic" accept="image/*" />
+                    </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                <button class=" btn btn-primary" type="submit" >Make Change</button>
+
+            </div>
+        </div>
+        
+        </form>
+    
+    </div>
+</div>
+
+
+{% endblock %}

@@ -1,0 +1,105 @@
+{% extends 'base.html' %} {% load static %} {% block content_container %} {% load crispy_forms_tags %}
+{% include 'accounts/uploadImage.html' %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="{% static 'css/itemRegs.css' %}">
+
+    <!-- Page Heading -->
+    <title>User Profile</title>
+</head>
+<h1 class="h3 mb-0 text-gray-800">User Information</h1><br>
+
+
+<div class="row">
+    <div class="col-lg-3 h-100">
+        <div class="card-transparent "> 
+            <!-- Card Header - Dropdown -->
+            
+            <div class="card-body ">
+                
+                <form method="POST" enctype="multipart/form-data">
+                    
+                    {% csrf_token %}
+                    <div class="d-flex flex-row-reverse">
+                        <button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#updatePicture" > Update</button>
+                    </div>
+                    <div class="user-image">
+                        {% if not profile_pic %}
+                        <img src="{% static 'img/profile/profile-picture.png' %}" alt="Profile Picture" class="rounded-circle img-fluid px-3 px-sm-4 mt-3 mb-4" id="myimage">
+                        {% else %}
+                        <img src="{{ profile_pic.url }}" alt="Profile Picture" class="rounded-circle img-fluid px-3 px-sm-4 mt-3 mb-4" id="myimage">
+                        {% endif %}
+                        {% for field in user %}
+                        <h1 class="h4 mb-0 text-gray-800 text-center" >{{field.role}}</h1>
+                        {%endfor%} 
+                    </div>
+                    
+                </form>
+        
+            </div>
+    
+        </div>
+
+    </div>
+    
+    <div class="col-lg-9 h-100"> 
+        <div class="card-transparent"> 
+            <div class="card-body ">
+                <form method="POST" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    {% if user.is_superuser %}
+                    <a href="{% url 'userlist' %}" class="btn btn-secondary">Back</a>
+                    {% endif %}
+                    <a href="{% url 'editUser' pk %}" class="btn btn-secondary">Update</a>
+                    <div class="row">
+                        {% for field in form %}
+                        <div class="col-md-6">
+                            {% if field.name == 'username' %}
+                            <label for="id_{{field.name}}"></label>
+                            <div>
+                                {{field|as_crispy_field}}
+                            </div>
+                            {% endif %}
+                            {% if field.name == 'dob' %}
+                            <label for="id_{{field.name}}"></label>
+                            <div>
+                                {{field|as_crispy_field}}
+                            </div>
+                            {% endif %}
+                            {% if field.name == 'name' %}
+                            <label for="id_{{field.name}}"></label>
+                            <div>
+                                {{field|as_crispy_field}}
+                            </div>
+                            {% endif %}
+                            {% if field.name == 'email' %}
+                            <label for="id_{{field.name}}"></label>
+                            <div>
+                                {{field|as_crispy_field}}
+                            </div>
+                            {% endif %}
+                            {% if field.name == 'contact_number' %}
+                            <label for="id_{{field.name}}"></label>
+                            <div>
+                                {{field|as_crispy_field}}
+                            </div>
+                            {% endif %}
+                        </div>
+                        {% endfor %}
+                    </div>
+                </form>
+        
+            </div>
+        </div>
+    </div>
+    
+    
+</div>
+
+
+
+{% endblock %}

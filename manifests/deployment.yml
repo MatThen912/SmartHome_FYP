@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mtccbapps
+  labels:
+    app: mtccbapps
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mtccbapps
+  template:
+    metadata:
+      labels:
+        app: mtccbapps
+    spec:
+      containers:
+        - name: mtccbapps
+          image: infrontccbdev2022.azurecr.io/mtccbapps:latest
+          ports:
+            - containerPort: 8000

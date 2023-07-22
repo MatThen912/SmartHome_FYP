@@ -1,0 +1,223 @@
+{% load static %}
+<style>
+  .nav-header{
+    display: flex; 
+    flex-direction:row; 
+    justify-content: space-between; 
+    align-items: center; 
+    padding: 30px 10%;
+    margin: 0;
+  }
+
+  .notification-menu{
+    visibility: hidden;
+    display: none;
+    padding-left: 10px; 
+    width: 240px;
+    box-shadow:5px 5px 10px rgb(214, 214, 214); 
+  }
+
+  .notification-item:hover > .notification-menu, .notification-menu:hover{
+    visibility: visible;
+    display: block;
+  } 
+
+  .profile-menu{
+    visibility: hidden;
+    display:none; 
+    float:none; 
+    box-shadow:5px 5px 10px rgb(214, 214, 214); 
+    right: 0; 
+    width: 300px;
+  }
+
+  .dropdown-profile:hover > .profile-menu, .profile-menu:hover{
+    visibility: visible;
+    display: block;
+  } 
+
+  .account-username, .account-email{
+    white-space: nowrap;
+    width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  @media all and (max-width: 961px){
+    .nav-header {
+      flex-direction: column;
+    }
+  }
+</style>
+
+<!-- Navbar -->
+<nav class="navbar navbar-main navbar-expand-sm shadow-none border-radius-sm" id="navbarBlur"
+  navbar-scroll="true" style="background-color: #fff; border-radius:0px; padding-bottom: 0;">
+  <div class="container-fluid nav-header py-1 px-3" style="padding-bottom: 0;">
+    <ul class="header-items" style="list-style:none; margin:0; margin-top:2px; padding: 0;">
+      <li class="header-item notification-item" style="display: inline-block; padding: 0px 10px;">
+        <a class="header-item my-auto" style="height: 100%; display: inline-block; vertical-align:middle; color:black;" href="#" id="notificationDropdownMenuLink"
+        role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        <!--<span><i class="fa fa-bell" style="color:rgb(46, 40, 84);"></i></span>-->
+
+        <div class="d-flex justify-content-center align-items-center">
+            <span id="time-and-date"></span>
+        </div> 
+  
+        </a>
+        
+      </li>
+
+      <li class="header-item" style=" height: 100%; display: inline-block; padding: 0px 10px; color:black;">
+
+      </li>
+
+      <li class="header-item dropdown-profile" style="display: inline-block;">
+        <a class="header-item my-auto text-dark" style=" height: 100%; display: inline-block; vertical-align:middle; padding-left:55rem; padding-right:1rem; " href="#" id="profileNavBar" 
+            role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            {{request.user.username}}
+            {% if not request.user.profile_pic %}
+            <img src="{% static 'img/profile/profile-picture.png' %}" style="width : 40px; height: 40px; margin-left: 1rem;" alt="Profile Picture" class="rounded-circle img-fluid" id="myimage">
+            {% else %}
+            <img src="{{ request.user.profile_pic.url }}"  style="width: 40px; height: 40px; margin-left: 1rem;" Profile Picture class="rounded-circle img-fluid" id="myimage">
+            {% endif %}   
+        </a>
+
+          <div class="profile-menu dropdown-menu mr-3" id="profileDropdown" aria-labelledby="navbarDropdownMenuLink">
+            <div class="profile-menu-header" style="text-align:right; margin: 0px 10px;">
+            </div>
+            <div class="profile-menu-body" style="min-height:132px; width:100%; align-items:center; grid-row:2/3; display: flex; align-items: center;">
+              <div class="col" style="width: 40%;">
+                {% if not request.user.profile_pic %}
+                <img src="{% static 'img/profile/profile-picture.png' %}" style="width : 88px; height: 88px; margin:20px;" alt="Profile Picture" class="rounded-circle img-fluid" id="myimage">
+                {% else %}
+                <img src="{{ request.user.profile_pic.url }}"  style="width : 88px; height: 88px; margin:20px;" Profile Picture class="rounded-circle img-fluid" id="myimage">
+                {% endif %}              
+              </div>
+
+              <div class="col" style="width:60%;">
+                <div class="account-username" style="font-weight:bold; font-size: 16px;">{{request.user.name}}</div>
+                <div class="account-email">{{request.user.email}}</div>
+                <div class="account-view-account">
+                  <span style="color:rgb(23, 23, 50)">
+                    {% if request.user.is_authenticated %}
+                    <a href="{% url 'viewUser' request.user.pk %}">View Profile</a>
+                    {% endif %}
+                  </span>
+                </div>
+              </div>
+            </div>
+
+            <div class="profile-menu-foot" style="align-items:center; display: flex; justify-content: right; margin-right: 20px;">
+              <a class="profile-item" data-bs-toggle="modal" data-bs-target="#exampleModal" role="button">
+                Log Out
+              </a>
+            </div>
+
+          </div>
+      </li>
+    </ul>
+
+
+
+    <!--pop modal-->
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Confirm Logout</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            Are you sure you want to Log out?
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            <a class="btn btn-primary" href="{% url 'logout' %}">Yes</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      const timeAndDate = document.getElementById("time-and-date");
+      setInterval(() => {
+        timeAndDate.innerHTML = new Date().toLocaleString();
+      }, 1000);
+    </script>
+    <script>
+      const iconNavbarSidenav = document.getElementById('iconNavbarSidenav');
+      const iconSidenav = document.getElementById('iconSidenav');
+      const sidenav = document.getElementById('sidenav-main');
+      let body = document.getElementsByTagName('body')[0];
+      let className = 'g-sidenav-pinned';
+
+      if (iconNavbarSidenav) {
+        iconNavbarSidenav.addEventListener("click", toggleSidenav);
+      }
+
+      if (iconSidenav) {
+        iconSidenav.addEventListener("click", toggleSidenav);
+      }
+
+      function toggleSidenav() {
+        if (body.classList.contains(className)) {
+          body.classList.remove(className);
+          setTimeout(function () {
+            sidenav.classList.remove('bg-white');
+          }, 100);
+          sidenav.classList.remove('bg-transparent');
+
+        } else {
+          body.classList.add(className);
+          sidenav.classList.add('bg-white');
+          sidenav.classList.remove('bg-transparent');
+          iconSidenav.classList.remove('d-none');
+        }
+      }
+    </script>
+
+    <script>
+      document.getElementById("profileDropdown").addEventListener("click", function(e){
+        e.stopPropagation();
+      })     
+    </script>
+
+    <script>
+  
+
+    </script>
+  </div>
+</nav>
+{% if messages %}
+{% for message in messages %}
+    {% if 'error' in message.tags %}
+        <div class="d-flex w-100 justify-content-end">
+            <div id="myDiv" class="alert alert-danger alert-dismissible position-absolute" role="alert" style="width:50%; z-index: 5000;">
+                {{ message }}
+                <a href="#" class="btn-close" data-dismiss="alert" aria-label="Close"> &times;</a>
+            </div>
+        </div>
+    {% endif %}
+    {% if 'success' in message.tags %}
+        <div class="d-flex w-100 justify-content-end">
+            <div id="myDiv" class="alert alert-default alert-dismissible position-absolute" role="alert" style="background-color: rgb(160, 232, 179); width: 50%; z-index: 5000;">  
+                {{ message }}
+                <a href="#" class="btn-close" data-dismiss="alert" aria-label="Close"> &times;</a>
+            </div>
+        </div>
+    {% endif %}
+    {% if 'warning' in message.tags %}
+    <div class="d-flex w-100 justify-content-end">
+        <div id="myDiv" class="alert alert-danger alert-dismissible position-absolute" role="alert"  style="width:50%; color:black; z-index: 5000;">
+            {{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">&times;</button> 
+        </div>
+    </div>
+    {% endif %}
+{% endfor %}
+{% endif %}
+<script>
+      $("#myDiv").fadeOut(5000);
+</script>
+<!-- End Navbar -->
