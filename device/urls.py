@@ -9,5 +9,9 @@ from django.views.decorators.cache import cache_page
 
 urlpatterns = [
     path("dashboard", views.deviceDashboardview, name="dashboard"),
+    path("adddevice", views.add_device, name="adddevice"),
+    path("devicelist", views.devicelistview, name="devicelist"),
+    path('toggle-device/<str:device_id>/', views.toggle_device, name='toggle_device'),
+
 
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

@@ -26,7 +26,7 @@ from django.views.generic import (
 
 )
 from smartIOT.settings import DEBUG, SESSION_COOKIE_AGE
-from .models import Account, UserPermissions,Userlog
+from .models import Account,Userlog
 from django.contrib.auth.models import Permission
 from django.db.models.query_utils import Q
 from django.utils.http import urlsafe_base64_encode
@@ -231,19 +231,8 @@ class EditUserView(View, LoginRequiredMixin, PermissionRequiredMixin):
             permissions = request.POST.getlist('permissions')
             role = request.POST.get("role")
 
-            if len(permissions) > 0:
-                user_perm = user.userpermissions_set.first()
-                # Create UserPermissions object if it does not exist
-                user_perm = UserPermissions.objects.create(
-                    account_id=user,
-                    role=role
-                ) if user_perm is None else user_perm
 
-                user_perm.permissions.set(permissions)  # Set the permissions
-                user.user_permissions.set(permissions)
-
-                user_perm.save()
-                user.save()
+            user.save()
             messages.success(request, "Successfully updated profile!")
 
             if(owner and (role == "Supervisor" or role == "Operator" or role == "External Vet")):

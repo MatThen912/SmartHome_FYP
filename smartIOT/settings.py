@@ -58,6 +58,7 @@ INSTALLED_APPS = [
     'smartIOT',
     'logbook',
     'device',
+    'devices',
     'user_sessions',
     'django_otp',
     'django_otp.plugins.otp_static',

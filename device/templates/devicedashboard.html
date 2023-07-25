@@ -61,10 +61,18 @@
             font-weight: bold;
           }
           
-          .device-controls {
-            margin-top: 10px;
+          .devices-container {
+            display: flex; /* Use 'flex' to show the cards in a horizontal line */
+            flex-wrap: wrap; /* Wrap cards to the next row when they reach the container's width */
+            justify-content: space-around; /* Space evenly between cards horizontally */
+            width: 100%; / center; /* Center the cards horizontally within the container */
           }
-          
+        
+          .device-card {
+            display: inline-block; /* Use 'inline-block' to allow cards to be in a line horizontally */
+            margin: 10px; /* Add some margin between the cards */
+            text-align: center; /* Center the content inside each card */
+          }
           button {
             padding: 8px 16px;
             border: none;
@@ -88,16 +96,29 @@
       <p id="weather-description">Sunny</p>
     </div>
 </div>
-
-<div class="device-card">
-  <div class="device-icon">
-    <!-- Light icon will go here, you can use an image or an icon font -->
-    <img src="{% static 'img/lightOFF.jpeg' %}" alt="Light Icon" id="light-icon">
-  </div>
-  <p class="device-name">Light 1</p>
-  <div class="device-controls">
-    <button id="toggle-button">Turn On</button>
-  </div>
+<div class="devices-container">
+  {%for device in devicelist%} 
+    <div class="device-card">
+      <div class="device-icon">
+        <!-- Light icon will go here, you can use an image or an icon font -->
+        {% if device.status == 0 %}
+          <img src="{% static 'img/lightOFF.jpeg' %}" alt="Light Icon" id="light-icon-{{ device.device_id }}">
+        {% else %}
+          <img src="{% static 'img/lightON.jpeg' %}" alt="Light Icon" id="light-icon-{{ device.device_id }}">
+        {% endif %}
+      </div>
+      <p class="device-name">{{device.name}}</p>
+        <div class="device-controls">
+          <button class="toggle-button" data-device-id="{{ device.device_id }}" data-status="{{ device.status }}">
+            {% if device.status %}
+            Turn OFF
+          {% else %}
+            Turn ON
+          {% endif %}
+          </button>
+        </div>
+    </div>
+  {%endfor%}
 </div>
 
 <script>
@@ -124,10 +145,10 @@
         console.log(cityElement);
         const temperatureElement = document.getElementById('temperature');
         const weatherDescriptionElement = document.getElementById('weather-description');
-
         cityElement.textContent = weatherData.name;
-        temperatureElement.textContent = `Temperature: ${weatherData.main.temp}°C`;
-        weatherDescriptionElement.textContent = `Weather: ${weatherData.weather[0].description}`;
+        temperatureElement.textContent = `Temperature: ${Math.round(weatherData.main.temp - 273.15, 2)}°C`;
+      
+        weatherDescriptionElement.textContent = `Weather:${weatherData.weather[0].description}`;
     }
 
     // Call the updateWeather function initially and then every 10 minutes to keep the data up to date
@@ -135,27 +156,54 @@
     setInterval(updateWeather, 600000); // 10 minutes (in milliseconds)
 
 
-    function toggleLight() {
-      const lightIcon = document.getElementById('light-icon');
-      const toggleButton = document.getElementById('toggle-button');
-      
-      // Assuming you have a variable or state to keep track of the light's current state
-      let isLightOn = false;
-    
-      if (isLightOn) {
-        lightIcon.src = "{% static 'img/lightOFF.jpeg' %}"; // Replace with the off icon image path
-        toggleButton.textContent = "Turn On";
-      } else {
-        lightIcon.src = "{% static 'img/lightON.jpeg' %}"; // Replace with the on icon image path
-        toggleButton.textContent = "Turn Off";
+    async function toggleDevice(deviceId) {
+      const toggleButton = document.querySelector(`[data-device-id="${deviceId}"]`);
+      const lightIcon = document.getElementById(`light-icon-${deviceId}`);
+      console.log(deviceId)
+      // Get the current status from the data attribute
+      let isLightOn = toggleButton.dataset.status === 'true';
+  
+      try {
+        const response = await fetch(`toggle-device/${deviceId}/`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': getCookie('csrftoken'),
+          },
+          body: JSON.stringify({ status: !isLightOn }), // Send the new status to the server
+        });
+  
+        if (response.ok) {
+          // Toggle the light's state based on the new status
+          isLightOn = !isLightOn;
+  
+          // Update the data attribute with the new status
+          toggleButton.dataset.status = isLightOn.toString();
+  
+          // Update the button text and the light icon based on the new status
+          toggleButton.textContent = `Turn ${isLightOn ? "OFF" : "ON"}`;
+          lightIcon.src = isLightOn ? "{% static 'img/lightON.jpeg' %}" : "{% static 'img/lightOFF.jpeg' %}";
+
+        } else {
+          console.error('Failed to toggle device status');
+        }
+      } catch (error) {
+        console.error('Error toggling device status:', error);
       }
-    
-      // Toggle the light's state
-      isLightOn = !isLightOn;
     }
-    
-    // Add event listener to the toggle button
-    const toggleButton = document.getElementById('toggle-button');
-    toggleButton.addEventListener('click', toggleLight);
+  
+    const toggleButtons = document.querySelectorAll('.toggle-button');
+    toggleButtons.forEach(button => {
+      button.addEventListener('click', () => {
+        const deviceId = button.dataset.deviceId;
+        toggleDevice(deviceId);
+      });
+    });
+  
+    function getCookie(name) {
+      const value = `; ${document.cookie}`;
+      const parts = value.split(`; ${name}=`);
+      if (parts.length === 2) return parts.pop().split(';').shift();
+    }
 </script>
 {%endblock%}

@@ -123,7 +123,7 @@
   <!-- Sidebar - Brand -->
 
   <div class="sidebar-brand navbar-brand d-flex align-items-center justify-content-center pt-1 pb-2 border-b" style="position: relative">
-    <a href="{% url 'home' %}">
+    <a href="{% url 'dashboard' %}">
       <img class="sidebar-brand-icon" src="{% static 'img/home.jpg' %}" alt="Logo" height="40">
       <span class="ms-1 hiddenable-text font-weight-bold mx-2">Smart Home</span>
     </a>
@@ -139,14 +139,14 @@
   <hr class="horizontal dark mt-0"> 
   {% if user.role == "Super Admin" %}
     <li class="nav-item" id="home">
-      <a class="nav-link menu" href="{% url 'home' %}">
+      <a class="nav-link menu" href="{% url 'dashboard' %}">
         <i class="fas fa-home fa-fw mr-2 text-gray-400"></i>
         <span class="hiddenable-text nav-link-text ms-1">Dashboard</span>
       </a>
     </li>
 
     <li class="nav-item" id="User">
-      <a class="nav-link menu" href="{% url 'userlist' %}">
+      <a class="nav-link menu" href="{% url 'devicelist' %}">
         <i class="fa-sharp fa-solid fa-plug"></i>
         <span class="hiddenable-text nav-link-text ms-1">Device</span>
       </a>
@@ -167,14 +167,14 @@
     </li>
     {% elif user.role == "Admin" %}
     <li class="nav-item" id="home">
-      <a class="nav-link menu" href="{% url 'home' %}">
+      <a class="nav-link menu" href="{% url 'dashboard' %}">
         <i class="fas fa-home fa-fw mr-2 text-gray-400"></i>
         <span class="hiddenable-text nav-link-text ms-1">Dashboard</span>
       </a>
     </li>
 
     <li class="nav-item" id="User">
-      <a class="nav-link menu" href="{% url 'userlist' %}">
+      <a class="nav-link menu" href="{% url 'devicelist' %}">
         <i class="fa-sharp fa-solid fa-plug"></i>
         <span class="hiddenable-text nav-link-text ms-1">Device</span>
       </a>
@@ -195,13 +195,13 @@
     </li>
     {%elif user.role == "User" %}
       <li class="nav-item" id="home">
-        <a class="nav-link menu" href="{% url 'home' %}">
+        <a class="nav-link menu" href="{% url 'dashboard' %}">
           <i class="fas fa-home fa-fw mr-2 text-gray-400"></i>
           <span class="hiddenable-text nav-link-text ms-1">Dashboard</span>
         </a>
       </li>
       <li class="nav-item" id="User">
-        <a class="nav-link menu" href="{% url 'userlist' %}">
+        <a class="nav-link menu" href="{% url 'devicelist' %}">
           <i class="fa-sharp fa-solid fa-plug"></i>
           <span class="hiddenable-text nav-link-text ms-1">Device</span>
         </a>

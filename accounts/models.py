@@ -94,10 +94,7 @@ class Account(AbstractBaseUser, PermissionsMixin):
         return self.name
 
 
-class UserPermissions(models.Model):
-    account_id = models.ForeignKey(Account, on_delete=models.CASCADE)
-    permissions = models.ManyToManyField(Permission)
-    role = models.CharField(choices=USER_ROLE, max_length=200)
+
 
 
 

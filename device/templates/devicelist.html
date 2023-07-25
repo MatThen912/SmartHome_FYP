@@ -1,0 +1,70 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %} {% block content_container %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <title>Device Management</title>
+  <style>
+    .close {
+  position: relative;
+  top: -2px;
+  right: -21px;
+  color: inherit;
+}
+  </style>
+</head>
+
+<body>
+  <h1 class="h3 mb-0 text-gray-800">Device Management</h1>
+  <br>
+  <div class="card shadow mb-4">
+    <div class="card-header py-3">
+    {% if role != "User"  %}
+      <button type="button" class="btn btn-secondary" onclick="document.location='adddevice'">Add Device</button>
+    {% endif %}
+    </div>
+    <div class="card-body">
+
+      <div class="table-responsive">
+        <table class="table align-items-center mb-0" id="dataTable" width="100%" cellspacing="0">
+          <thead>
+            <tr>
+              <th class="text-center text-uppercase text-secondary text-mb font-weight-bolder opacity-15">Name</th>
+              <th class="text-center text-uppercase text-secondary text-mb font-weight-bolder opacity-15">Category</th>
+              <th class="text-center text-uppercase text-secondary text-mb font-weight-bolder opacity-15">Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for device in devicelist %}
+            <tr>
+              <td class="align-middle text-center text-m">{{ device.name }}</td>
+              <td class="align-middle text-center text-m">{{ device.category }}</td>
+              {% if device.status  %}
+                <td class="align-middle text-center text-m">ON</td>
+              {% else %}
+                <td class="align-middle text-center text-m">OFF</td>
+              {% endif %}
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  
+<!-- pop out modal for bulk stock in & out -->
+
+  
+  <script>
+    var table = $('#dataTable').DataTable({
+      language: {
+        oPaginate: {
+          sNext: '<i class="fa fa-angle-right"></i>',
+          sPrevious: '<i class="fa fa-angle-left"></i>',
+        }
+      }
+    })
+  </script>
+
+{%endblock%}
