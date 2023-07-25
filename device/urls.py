@@ -12,6 +12,7 @@ urlpatterns = [
     path("adddevice", views.add_device, name="adddevice"),
     path("devicelist", views.devicelistview, name="devicelist"),
     path('toggle-device/<str:device_id>/', views.toggle_device, name='toggle_device'),
+    path('delete-device/<str:device_id>/', views.delete_device, name='delete_device'),
 
 
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

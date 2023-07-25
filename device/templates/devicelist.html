@@ -33,6 +33,7 @@
               <th class="text-center text-uppercase text-secondary text-mb font-weight-bolder opacity-15">Name</th>
               <th class="text-center text-uppercase text-secondary text-mb font-weight-bolder opacity-15">Category</th>
               <th class="text-center text-uppercase text-secondary text-mb font-weight-bolder opacity-15">Status</th>
+              <th class="text-center text-uppercase text-secondary text-mb font-weight-bolder opacity-15">Action</th>
             </tr>
           </thead>
           <tbody>
@@ -45,7 +46,14 @@
               {% else %}
                 <td class="align-middle text-center text-m">OFF</td>
               {% endif %}
+              {% if User.role == "Super Admin" or "Admin"%} 
+                <td class="align-middle text-center text-m">               
+                  <a onClick="setID('{{ device.device_id}}', 'device')" data-toggle="modal" data-target="#deleteModal" class="badge badge-sm outline-danger">Delete</a>
+                </td>
+              {% endif %}
             </tr>
+
+           
             {% endfor %}
           </tbody>
         </table>
@@ -53,9 +61,8 @@
     </div>
   </div>
   
-<!-- pop out modal for bulk stock in & out -->
 
-  
+
   <script>
     var table = $('#dataTable').DataTable({
       language: {
@@ -67,4 +74,20 @@
     })
   </script>
 
+  {% include 'delete-confirmation.html' %}
+  <script>
+    // set which id to delete on confirmation pop up
+    const setID = (id, type) => {
+      const IDField = document.querySelector("#event-id");
+      IDField.value = JSON.stringify({id, type});
+    }
+  
+    // delete data function
+    const deleteData = () => {
+      data = JSON.parse(document.getElementById("event-id").value);
+        url = `delete-device/${data.id}`;
+      window.history.pushState({}, '', url);
+      return location.reload();
+    }
+  </script>
 {%endblock%}

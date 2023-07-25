@@ -9,7 +9,7 @@ from django.shortcuts import get_object_or_404
 from django.http import JsonResponse, HttpResponse 
 from devices.models import Device
 from devices.forms import createdeviceForm
-
+from django.contrib import messages
 
 
 def deviceDashboardview(request):
@@ -47,3 +47,10 @@ def devicelistview(request):
         'role':currRole
     }
     return render(request, 'devicelist.html', context)
+
+def delete_device(request,device_id):
+    print(device_id)
+    event = Device.objects.get(pk=device_id)
+    event.delete()
+    messages.success(request, "User deleted successfully!")
+    return redirect('devicelist')
