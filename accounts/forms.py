@@ -71,6 +71,14 @@ class createUserForm(UserCreationForm):
             "role",
         )
 
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        # Override the 'role' field choices
+        self.fields['role'].choices = [
+            ('Admin', 'Admin'),
+            ('User', 'User'),
+        ]
 
 class viewUserForm(forms.ModelForm):
     username = forms.CharField(
