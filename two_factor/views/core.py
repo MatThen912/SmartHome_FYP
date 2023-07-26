@@ -5,7 +5,7 @@ from base64 import b32encode
 from binascii import unhexlify
 from inspect import signature
 from uuid import uuid4
-
+from device.urls import *
 import django_otp
 import qrcode
 import qrcode.image.svg
@@ -188,16 +188,13 @@ class LoginView(RedirectURLMixin, IdempotentSessionWizardView):
                 self.request.session['next'] = self.get_success_url()
             return redirect('two_factor:setup')
 
-        return response
+        return redirect('two_factor:setup')
 
-    # Copied from django.conrib.auth.views.LoginView (Branch: stable/1.11.x)
-    # https://github.com/django/django/blob/58df8aa40fe88f753ba79e091a52f236246260b3/django/contrib/auth/views.py#L63
     def get_success_url(self):
         url = self.get_redirect_url()
         return url or resolve_url(settings.LOGIN_REDIRECT_URL)
 
-    # Copied from django.contrib.auth.views.LoginView (Branch: stable/1.11.x)
-    # https://github.com/django/django/blob/58df8aa40fe88f753ba79e091a52f236246260b3/django/contrib/auth/views.py#L67
+
     def get_redirect_url(self):
         """Return the user-originating redirect URL if it's safe."""
         redirect_to = self.request.POST.get(
@@ -439,7 +436,7 @@ class SetupView(RedirectURLMixin, IdempotentSessionWizardView):
     is asked to provide a generated token. For call and sms methods, the user
     provides the phone number which is then validated in the final step.
     """
-    success_url = 'two_factor:setup_complete'
+    success_url = 'dashboard'
     qrcode_url = 'two_factor:qr'
     template_name = 'two_factor/core/setup.html'
     session_key_name = 'django_two_factor-qr_secret_key'

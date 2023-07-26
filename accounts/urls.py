@@ -5,12 +5,15 @@ from . import views
 from django.conf import settings
 from django.conf.urls.static import static
 from django.views.decorators.cache import cache_page
-
+from two_factor.views import (
+    BackupTokensView, DisableView, LoginView, ProfileView, QRGeneratorView,
+    SetupCompleteView, SetupView,
+)
 
 urlpatterns = [
     path("home", views.temporary_home, name="home"),
     path("addUser",views.AddUserView.as_view(), name="addUser"),
-    path("", views.LoginView.as_view(), name="login"),
+     path( '',LoginView.as_view(),name='login',),
     path("logout", views.logout, name="logout"),
     path("errorpage", views.permission_denied, name="errorpage"),
     path("userlist", views.UserListView.as_view(), name="userlist"),

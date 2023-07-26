@@ -20,6 +20,7 @@ from rest_framework import routers
 
 from accounts import views as auth_views  # import this
 from django.conf.urls.static import static
+from two_factor.urls import urlpatterns as tf_urls
 
 # router = routers.DefaultRouter()
 # router.register(r'users', views.UserViewSet)
@@ -35,9 +36,10 @@ urlpatterns = [
     path('reset/<uidb64>/<token>/', auth_views.PasswordResetConfirmView.as_view(), name='password_reset_confirm'),
     path('reset/done/', auth_views.PasswordResetCompleteView.as_view(
         template_name='password/password_reset_complete.html'), name='password_reset_complete'),
-
+    path('', include(tf_urls)),
     path('', include('accounts.urls')),
- 
+    path('', include('user_sessions.urls', 'user_sessions')),
+
     # path('api/', include(router.urls)),
     path('api-auth/', include('rest_framework.urls', namespace='rest_framework')),
 ]+ static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

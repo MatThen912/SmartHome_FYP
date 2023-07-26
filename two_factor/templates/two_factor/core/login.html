@@ -1,57 +1,252 @@
-{% extends "two_factor/_base_focus.html" %}
+{% load static %}{% load crispy_forms_tags %}
 {% load i18n %}
 {% load two_factor_tags %}
+{% load static %} {% load crispy_forms_tags %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+    <link
+      rel="apple-touch-icon"
+      sizes="76x76"
+      href="{% static '/img/smarthomelogo.png' %}"
+    />
+    <link rel="icon" type="image/png" href="{% static '/img/smarthomelogo.png' %}" />
+    <title>SmartHome</title>
+    <!--     Fonts and icons     -->
+    <link
+      href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700"
+      rel="stylesheet"
+    />
+    <!-- Nucleo Icons -->
+    <link href="{% static '/css/nucleo-icons.css' %}" rel="stylesheet" />
+    <link href="{% static '/css/nucleo-svg.css' %}" rel="stylesheet" />
+    <!-- Font Awesome Icons -->
+    <script
+      src="https://kit.fontawesome.com/42d5adcbca.js"
+      crossorigin="anonymous"
+    ></script>
+    <link href="{% static '/css/nucleo-svg.css' %}" rel="stylesheet" />
+    <!-- CSS Files -->
+    <link
+      id="pagestyle"
+      href="{% static '/css/soft-ui-dashboard.css' %}"
+      rel="stylesheet"
+    />
 
-{% block extra_media %}
-  {{ form.media }}
-{% endblock %}
+    <style>
+      /* *{
+        margin:0;
+        padding:0;
+        box-sizing: border-box;
+      }
+
+      .body{
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 0;
+      }
+
+      .container{
+        max-width: 900px;
+        width: 100%;
+        margin-top: 30px;
+        padding: 40px 30px;
+        background-color: white;
+        box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+        height: 100%;
+        position: relative;
+      }
+
+      .container .form-content{
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+      }
+
+      .container .cover{
+        position: absolute;  
+        height: 100%;
+        width: 50%;
+        top: 0;
+        left: 50%;
+        background:rgb(54, 0, 190);
+        z-index: 69;
+        transition: all 1s ease;
+        perspective: 2800px;
+        transform-style: preserve-3d;
+        transform-origin: left;
+      }
+
+      .container #flip:checked~.cover{
+        transform: rotateY(-180deg);
+      }
+
+      .front{
+        display: flex;
+        justify-content: center;
+        backface-visibility: hidden;
+      }
+
+      .container .cover::before{
+        content: '';
+        position: absolute;
+        height: 100%;
+        width: 100%;
+        z-index:100;
+      }
+
+      .container .cover::after{
+        content: '';
+        position: absolute;
+        height: 100%;
+        width: 100%;
+        z-index: 100;
+        transform: rotateY(180deg);
+        
+      }
+
+      .container .cover img{
+        width: 100%;
+        max-width: 300px;
+        height: auto;
+        margin: 100px auto;
+        object-fit: cover;
+      }
+
+      .form-content .login-form, 
+      .form-content .register-form{
+        width: calc(100%/2 - 25px);
+      }
+
+      .register-form{
+        overflow-y: scroll;
+        overflow-x: hidden;
+      }
+
+      footer{
+        text-align: center;
+      } */
+    </style>
+  </head>
 
 {% block content %}
-  <h1>{% block title %}{% trans "Login" %}{% endblock %}</h1>
+ 
 
-  {% if wizard.steps.current == 'auth' %}
-    <p>{% blocktrans %}Enter your credentials.{% endblocktrans %}</p>
-  {% elif wizard.steps.current == 'token' %}
-    <p>{{ device|as_verbose_action }}</p>
-  {% elif wizard.steps.current == 'backup' %}
-    <p>{% blocktrans trimmed %}Use this form for entering backup tokens for logging in.
-      These tokens have been generated for you to print and keep safe. Please
-      enter one of these backup tokens to login to your account.{% endblocktrans %}</p>
-  {% endif %}
+    <body>
+      <section>
+      <main class="main-content mt-0">
+        <div class="page-header min-vh-75">
+          
+           <div class="container">
+            <div class="row">
+              <div
+                class="col-xl-4 col-lg-5 col-md-6 d-flex flex-column mx-auto"
+              >
+                <div class="card card-plain mt-8">
+                  <div class="card-header pb-0 text-left bg-transparent">
+                    <h3 class="font-weight-bolder text-primary text-center">
+                      Welcome to D Smart Home System 
+                    </h3>
+                  </div>
+                  <div class="card-body">
 
-  <form action="" method="post">{% csrf_token %}
-    {% include "two_factor/_wizard_forms.html" %}
+                    {% if wizard.steps.current == 'auth' %}
+                      <p>{% blocktrans %}Enter your credentials.{% endblocktrans %}</p>
+                    {% elif wizard.steps.current == 'token' %}
+                      <p>{{ device|as_verbose_action }}</p>
+                    {% elif wizard.steps.current == 'backup' %}
+                      <p>{% blocktrans trimmed %}Use this form for entering backup tokens for logging in.
+                        These tokens have been generated for you to print and keep safe. Please
+                        enter one of these backup tokens to login to your account.{% endblocktrans %}</p>
+                    {% endif %}
+                  
+                    <form action="" method="post">{% csrf_token %}
+                      {% include "two_factor/_wizard_forms.html" %}
+                  
+                      {# hidden submit button to enable [enter] key #}
+                      <input type="submit" value="" hidden />
+                  
+                      {% if other_devices %}
+                        <p>{% trans "Or, alternatively, use one of your other authentication methods:" %}</p>
+                        <p>
+                          {% for other in other_devices %}
+                          <button name="challenge_device" value="{{ other.persistent_id }}"
+                                  class="btn btn-secondary btn-block" type="submit">
+                            {{ other|as_action }}
+                          </button>
+                        {% endfor %}</p>
+                      {% endif %}
+                  
+                      {% include "two_factor/_wizard_actions.html" %}
+                    </form>
+                  
+                    {% block 'backup_tokens' %}
+                      {% if backup_tokens %}
+                         <hr>
+                         <div class="backup_tokens_form">
+                         <form action="" method="post">
+                             {% csrf_token %}
+                              <p>{% trans "As a last resort, you can use a backup token:" %}</p>
+                              <p>
+                                  <button name="wizard_goto_step" type="submit" value="backup"
+                                      class="btn btn-sm btn-secondary btn-block">{% trans "Use Backup Token" %}</button>
+                              </p>
+                         </form>
+                         </div>
+                      {% endif %}
+                  </div>
+                  <div class="card-footer text-center pt-0 px-lg-2 px-1">
+                    <p class="mb-4 text-sm mx-auto">
+                      Can't remember your password?
+                      <a href="{% url 'forgot-password' %}" class="text-secondary font-weight-bold">Reset Password</a>
+                    </p>
+                  </div>
+                 
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="top-0 h-100 d-md-block d-none me-n8" style="align-items:center;">
+                  <img src="{% static 'img\home.jpg' %}" alt="Logo" style="width: 100%; max-width:500px; height: auto; margin: 100px auto;">          
 
-    {# hidden submit button to enable [enter] key #}
-    <input type="submit" value="" hidden />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
 
-    {% if other_devices %}
-      <p>{% trans "Or, alternatively, use one of your other authentication methods:" %}</p>
-      <p>
-        {% for other in other_devices %}
-        <button name="challenge_device" value="{{ other.persistent_id }}"
-                class="btn btn-secondary btn-block" type="submit">
-          {{ other|as_action }}
-        </button>
-      {% endfor %}</p>
-    {% endif %}
-
-    {% include "two_factor/_wizard_actions.html" %}
-  </form>
-
-  {% block 'backup_tokens' %}
-    {% if backup_tokens %}
-       <hr>
-       <div class="backup_tokens_form">
-       <form action="" method="post">
-           {% csrf_token %}
-            <p>{% trans "As a last resort, you can use a backup token:" %}</p>
-            <p>
-                <button name="wizard_goto_step" type="submit" value="backup"
-                    class="btn btn-sm btn-secondary btn-block">{% trans "Use Backup Token" %}</button>
-            </p>
-       </form>
-       </div>
-    {% endif %}
+    <!--   Core JS Files   -->
+    <script src="{% static '/js/core/popper.min.js' %}"></script>
+    <script src="{% static '/js/core/bootstrap.min.js' %}"></script>
+    <script src="{% static '/js/plugins/perfect-scrollbar.min.js' %}"></script>
+    <script src="{% static '/js/plugins/smooth-scrollbar.min.js' %}"></script>
+    <script>
+      document.getElementById('copyright').innerHTML = "Copyright © " + new Date().getFullYear() + " Smart Home"
+    </script>
+    <script>
+      var win = navigator.platform.indexOf("Win") > -1;
+      if (win && document.querySelector("#sidenav-scrollbar")) {
+        var options = {
+          damping: "0.5",
+        };
+        Scrollbar.init(document.querySelector("#sidenav-scrollbar"), options);
+      }
+    </script>
+    <!-- Github buttons -->
+    <script async defer src="https://buttons.github.io/buttons.js"></script>
+    <!-- Control Center for Soft Dashboard: parallax effects, scripts for the example pages etc -->
+    <script src="{% static '/js/soft-ui-dashboard.min.js' %}"></script>
+    <script>      
+      $("#myDiv").fadeOut(5000);
+    </script>
+  </body>
   {% endblock %}
 {% endblock %}

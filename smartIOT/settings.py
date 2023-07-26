@@ -57,6 +57,7 @@ INSTALLED_APPS = [
     'accounts',
     'smartIOT',
     'logbook',
+    'two_factor',
     'device',
     'devices',
     'user_sessions',
@@ -111,6 +112,8 @@ SIMPLE_JWT = {
 }
 
 MIDDLEWARE = [
+    'django.middleware.locale.LocaleMiddleware',
+    'django_otp.middleware.OTPMiddleware',
     'django.middleware.security.SecurityMiddleware',
     "corsheaders.middleware.CorsMiddleware",
     'user_sessions.middleware.SessionMiddleware',
@@ -119,18 +122,17 @@ MIDDLEWARE = [
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
+    'django_otp.middleware.OTPMiddleware', 
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'accounts.middleware.OneSessionPerUserMiddleware',
-    'accounts.middleware.MustAuthenticatedMiddlware',
-    'django_user_agents.middleware.UserAgentMiddleware'
-    #'two_factor.middleware.threadlocals.ThreadLocals',
 
+    'django_user_agents.middleware.UserAgentMiddleware',
+    'two_factor.middleware.threadlocals.ThreadLocals'
 ]
 
-LOGIN_URL = '/login'
-LOGIN_REDIRECT_URL = '/'
-
+LOGIN_URL = 'two_factor:login'
+LOGIN_REDIRECT_URL = 'device/dashboard'
 ROOT_URLCONF = 'smartIOT.urls'
 
 TEMPLATES = [

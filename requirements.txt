@@ -79,3 +79,6 @@ twilio
 phonenumberslite
 django-otp-yubikey
 webauthn>=1.6.0,<1.99
+django-debug-toolbar
+django-user-sessions
+django-bootstrap-form
