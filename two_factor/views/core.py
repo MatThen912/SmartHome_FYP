@@ -60,7 +60,8 @@ logger = logging.getLogger(__name__)
 
 REMEMBER_COOKIE_PREFIX = getattr(settings, 'TWO_FACTOR_REMEMBER_COOKIE_PREFIX', 'remember-cookie_')
 
-
+# Class Definition: LoginView is a view for handling the login process, including OTP verification
+# It extends two Django mixin classes: RedirectURLMixin and IdempotentSessionWizardView
 class LoginView(RedirectURLMixin, IdempotentSessionWizardView):
     """
     View for handling the login process, including OTP verification.
@@ -72,18 +73,27 @@ class LoginView(RedirectURLMixin, IdempotentSessionWizardView):
     user is asked to provide the generated token. The backup devices are also
     listed, allowing the user to select a backup device for verification.
     """
+    
+    # Step names for different stages of the login process
     AUTH_STEP = "auth"
     TOKEN_STEP = "token"
     BACKUP_STEP = "backup"
     FIRST_STEP = AUTH_STEP
 
+    # Template to be used for rendering the login page
     template_name = 'two_factor/core/login.html'
+    
+    # List of forms for each step of the login process
     form_list = (
         (AUTH_STEP, AuthenticationForm),
         (TOKEN_STEP, AuthenticationTokenForm),
         (BACKUP_STEP, BackupTokenForm),
     )
+    
+    # Flag to determine whether to redirect authenticated users
     redirect_authenticated_user = False
+    
+    # Name of the storage class used for storing wizard data
     storage_name = 'two_factor.views.utils.LoginStorage'
 
     def has_token_step(self):
@@ -120,6 +130,7 @@ class LoginView(RedirectURLMixin, IdempotentSessionWizardView):
         self.cookies_to_delete = []
         self.show_timeout_error = False
 
+    # Post method: Handles form submissions and processes the steps accordingly
     def post(self, *args, **kwargs):
         """
         The user can select a particular device to challenge, being the backup
@@ -145,6 +156,7 @@ class LoginView(RedirectURLMixin, IdempotentSessionWizardView):
         response = super().post(*args, **kwargs)
         return self.delete_cookies_from_response(response)
 
+    # Done method: Executed when the user successfully completes all the steps of the login process
     def done(self, form_list, **kwargs):
         """
         Login the user and redirect to the desired page.
@@ -166,7 +178,6 @@ class LoginView(RedirectURLMixin, IdempotentSessionWizardView):
                                        user=self.get_user(), device=device)
 
             # Set a remember cookie if activated
-
             if getattr(settings, 'TWO_FACTOR_REMEMBER_COOKIE_AGE', None) and remember:
                 # choose a unique cookie key to remember devices for multiple users in the same browser
                 cookie_key = REMEMBER_COOKIE_PREFIX + str(uuid4())
@@ -405,8 +416,6 @@ class LoginView(RedirectURLMixin, IdempotentSessionWizardView):
             response.delete_cookie(cookie)
         return response
 
-    # Copied from django.contrib.auth.views.LoginView  (Branch: stable/1.11.x)
-    # https://github.com/django/django/blob/58df8aa40fe88f753ba79e091a52f236246260b3/django/contrib/auth/views.py#L49
     @method_decorator(sensitive_post_parameters())
     @method_decorator(csrf_protect)
     @method_decorator(never_cache)

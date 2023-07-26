@@ -76,11 +76,6 @@ class Account(AbstractBaseUser, PermissionsMixin):
             message='Please use the correct contact number',
             code='invalid_contact_number'
         ), ])
-    # report_to = models.CharField(max_length=120, null=True, blank=True)
-    # is_manager = models.BooleanField(default=False)
-    # is_admin = models.BooleanField(default=False)
-    # is_worker = models.BooleanField(default=False)
-    # is_vet = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True)
     is_superuser = models.BooleanField(default=False)
 
